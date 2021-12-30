@@ -1,0 +1,39 @@
+﻿@model List<e_TillRemote.Models.StockScreen>
+
+
+<h2>STOCK SCREEN</h2>
+
+
+<form action="~/Home/DbConnection1" method="post" style="">
+
+    @foreach (var item in Model)
+    {
+<div class="form-inline">
+    <div class="form-group col-md-2">
+        <label class="control-label">@item.LblName</label>
+    </div>
+
+    @if (@item.FieldType.ToLower() == "text" || @item.FieldType.ToLower() == "number" || @item.FieldType.ToLower() == "date")
+    
+       
+    {
+<div class="col-md-10">
+    <input type="@item.FieldType" name="@item.LblName" id="@item.LblName" value="@item.PropertyValue" class="form-control" maxlength="10" @item.ReadOnlyProp />
+</div> }
+                else
+                {
+<div class="col-md-10">
+    @Html.DropDownList(item.LblName, null, new { @class = "form-control" })
+</div>}
+
+</div>}
+    <input type="submit" class="btn btn-success" value="Save" />
+</form>
+
+
+<script src="~/scripts/jquery-1.10.2.js"></script>
+<script src="~/scripts/Calculation.js"></script>
+
+
+
+

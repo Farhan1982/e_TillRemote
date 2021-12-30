@@ -1,0 +1,36 @@
+﻿@model List<e_TillRemote.Models.StockScreen>
+
+
+<h2>STOCK SCREEN</h2>
+
+
+<form action="~/Home/index2" method="post" style="">
+
+    @for(int i =0;i<Model.Count;i++)
+    {
+<div class="form-inline">
+    <div class="form-group col-md-2">
+        <label class="control-label">@Model[i].LblName</label>
+    </div>
+
+    @if (Model[i].FieldType.ToLower() == "text" || Model[i].FieldType.ToLower() == "number" || Model[i].FieldType.ToLower() == "date")
+    
+       
+    {
+<div class="col-md-10">
+   @* <input type="hidden" name="@Model[i].LblName" value="@Model[i].LblName"/>*@
+    <input type="@Model[i].FieldType" name="@Model[i].FieldName" id="@Model[i].LblName" value="@Model[i].LblName-@Model[i].PropertyValue" class="form-control" maxlength="10" @Model[i].ReadOnlyProp />
+</div> }
+                
+
+</div>}
+    <input type="submit" class="btn btn-success" value="Save" />
+</form>
+
+
+<script src="~/scripts/jquery-1.10.2.js"></script>
+<script src="~/scripts/Calculation.js"></script>
+
+
+
+

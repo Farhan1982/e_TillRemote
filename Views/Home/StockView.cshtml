@@ -1,0 +1,163 @@
+﻿@model List<AddStock>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>STOCK VIEW</title>
+
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.0.min.js" type="text/javascript"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js" type="text/javascript"></script>
+    <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
+   
+    <script type="text/javascript">
+              
+            $(document).ready(function () {
+
+                $("#colname").autocomplete({
+
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/home/StockData",
+                            type: "POST",
+                            dataType: "json",
+                            data: { Prefix: request.term },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.NAME, value: item.NAME };
+                                }))
+
+                            }
+                        })
+                    },
+                    messages: {
+                        noResults: "", results: ""
+                    }
+                });
+            })
+    </script>
+
+
+
+</head>
+<body>
+
+    <form action="~/Home/filterStockView" method="post"> 
+        @Html.DropDownList("Stockcol", new List<SelectListItem>()
+    {
+        new SelectListItem{Text="ITEMCODE",Value="ITEMCODE"},
+        new SelectListItem{Text="DESCRPTON1",Value="DESCRPTON1"},
+        new SelectListItem{Text="DESCRPTON2",Value="DESCRPTON2"},
+        new SelectListItem{Text="SUPPLIER",Value="SUPPLIER"},
+        new SelectListItem{Text="SECTION1",Value="SECTION1"},
+        new SelectListItem{Text="SECTION2",Value="SECTION2"},
+        new SelectListItem{Text="SECTION3",Value="SECTION3"},
+        new SelectListItem{Text="SECTION4",Value="SECTION4"},
+        new SelectListItem{Text="SECTION5",Value="SECTION5"}
+            
+
+    })
+        <div class="ui-widget">
+            <input type="text" name="colname" id="colname" />
+        </div>
+
+        
+        <input type="submit" name="name" value="submit" />
+    </form> 
+    @*<table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                
+                <th>ITEMCODE</th>
+                <th>DESCRPTON1</th>
+                <th>DESCRPTON2</th>
+                <th>SUPPLIER</th>
+                <th>Q_IN_HAND</th>
+                <th>COST</th>
+                <th>LAST_COST</th>
+                <th>B_RETAIL</th>
+                <th>SECTION1</th>
+                <th>SECTION2</th>
+                <th>SECTION3</th>
+                <th>SECTION4</th>
+                <th>SECTION5</th>
+                <th>T1_RATE</th>
+                <th>RO_LEVEL</th>
+                <th>SDATE_FROM</th>
+                <th>SDATE_TO</th>
+                <th>OH_SORDER</th>
+            </tr>
+        </thead>
+
+
+
+
+
+
+
+
+
+        <tbody>
+            @if (Model !=null)
+            {
+
+            
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ITEMCODE</td>
+                    <td>@item.DESCRPTON1</td>
+                    <td>@item.DESCRPTON2</td>
+                    <td>@item.SUPPLIER</td>
+                    <td>@item.Q_IN_HAND</td>
+                    <td>@item.COST</td>
+                    <td>@item.LAST_COST</td>
+                    <td>@item.B_RETAIL</td>
+                    <td>@item.SECTION1</td>
+                    <td>@item.SECTION2</td>
+                    <td>@item.SECTION3</td>
+                    <td>@item.SECTION4</td>
+                    <td>@item.SECTION5</td>
+
+                    <td>@item.T1_RATE</td>
+                    <td>@item.RO_LEVEL</td>
+                    <td>@item.SDATE_FROM</td>
+                    <td>@item.SDATE_TO</td>
+                    <td>@item.OH_SORDER</td>
+
+                </tr>
+
+            }
+         }
+        </tbody>
+    </table>*@
+
+</body>
+
+</html>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            columnDefs: [{
+                targets: [0],
+                orderData: [0, 1]
+            }, {
+                targets: [1],
+                orderData: [1, 0]
+            }, {
+                targets: [4],
+                orderData: [4, 0]
+            }]
+        });
+    });
+
+</script>
