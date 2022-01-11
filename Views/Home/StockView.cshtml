@@ -1,53 +1,32 @@
 ﻿@model List<AddStock>
 @{
-    Layout = null;
+//Layout = null;
 }
 
-<!DOCTYPE html>
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>STOCK VIEW</title>
+
+    @*<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.0.min.js" asp-append-version="true" type="text/javascript"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js" asp-append-version="true" type="text/javascript"></script>
+        <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css"
+          rel="Stylesheet" asp-append-version="true" type="text/css" />*@
+
+    @*<script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>
+    <script src="https: //cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js" type="text/javascript"></script>        
+    <script src="https: //cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js" type="text/javascript"></script>*@
+
+    
 
 
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.0.min.js" type="text/javascript"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js" type="text/javascript"></script>
-    <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
-   
-    <script type="text/javascript">
-              
-            $(document).ready(function () {
-
-                $("#colname").autocomplete({
-
-                    source: function (request, response) {
-                        $.ajax({
-                            url: "/home/StockData",
-                            type: "POST",
-                            dataType: "json",
-                            data: { Prefix: request.term },
-                            success: function (data) {
-                                response($.map(data, function (item) {
-                                    return { label: item.NAME, value: item.NAME };
-                                }))
-
-                            }
-                        })
-                    },
-                    messages: {
-                        noResults: "", results: ""
-                    }
-                });
-            })
-    </script>
+            
 
 
 
 </head>
 <body>
 
-    <form action="~/Home/filterStockView" method="post"> 
+    <form action="~/Home/filterStockView" method="post">
         @Html.DropDownList("Stockcol", new List<SelectListItem>()
     {
         new SelectListItem{Text="ITEMCODE",Value="ITEMCODE"},
@@ -59,17 +38,22 @@
         new SelectListItem{Text="SECTION3",Value="SECTION3"},
         new SelectListItem{Text="SECTION4",Value="SECTION4"},
         new SelectListItem{Text="SECTION5",Value="SECTION5"}
-            
+
+
+
 
     })
-        <div class="ui-widget">
-            <input type="text" name="colname" id="colname" />
-        </div>
+        @Html.DropDownList("Section", new List<SelectListItem>(),"Select Section",new {id="ddlsection"})
+            
 
-        
-        <input type="submit" name="name" value="submit" />
+            <div class="ui-widget">
+                <input id="colname" name="colname" />
+            </div>
+
+
+            <input type="submit" name="name" value="submit" />
     </form> 
-    @*<table id="example" class="display" style="width:100%">
+    <table id="example" class="table table table-bordered table-responsive"  style="width:100%">
         <thead>
             <tr>
                 
@@ -93,14 +77,6 @@
                 <th>OH_SORDER</th>
             </tr>
         </thead>
-
-
-
-
-
-
-
-
 
         <tbody>
             @if (Model !=null)
@@ -135,13 +111,46 @@
             }
          }
         </tbody>
-    </table>*@
+    </table>
 
 </body>
 
 </html>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#Stockcol').change(function () {
+            $.ajax({
+                url: "http://localhost:25090/home/SectionData",
+                type: "POST",
+                dataType: "json",
+                data: { tablename: $('#Stockcol :selected').text()},
+                success: function (data) {
+
+
+                    var section = "<select id='ddlsection'>";
+                    section = section + '<option value="">--Select--</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        section = section + '<option value=' + data[i].code + '>' + data[i].code + '-' + data[i].name + '</option>';
+                    }
+                    section = section + '</select>';
+                    $('#ddlsection').html(section);
+
+
+
+                }
+            })
+
+
+        });
+
+    })
+
+</script>
+
 
 <script>
 

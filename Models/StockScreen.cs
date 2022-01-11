@@ -20,14 +20,14 @@ namespace e_TillRemote.Models
 
     public class Section1
     {
-        public int CODE { get; set; }
+        public string CODE { get; set; }
         public string NAME { get; set; }
 
     }
 
     public class Section2
     {
-        public int CODE { get; set; }
+        public string CODE { get; set; }
         public string NAME { get; set; }
 
     }

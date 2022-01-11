@@ -194,7 +194,23 @@ namespace e_TillRemote.Controllers
             return View();
         }
 
+       [HttpPost]
+        public JsonResult SectionData(string tablename)
+        {
 
+
+           SqlConnection con = new SqlConnection(@"Data Source=MOSAPP;Initial Catalog=eTill;Integrated Security=true");
+            
+            var param = new DynamicParameters();
+            param.Add("@TABLE", tablename);
+            
+            var sectionsData = con.Query<Section2>("uspt_getSectionData", param: param, commandType: CommandType.StoredProcedure).ToList();
+
+            ViewBag.SECTION1 = new SelectList(sectionsData, "CODE", "NAME").ToList();
+            return Json(sectionsData);
+
+
+        }
 
 
 
