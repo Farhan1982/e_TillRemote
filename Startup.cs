@@ -8,31 +8,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Configuration;
 
 namespace e_TillRemote
 {
     public class Startup
     {
+
+        private IConfiguration Configuration;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+       
+        
+
+
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddMvc(options => {
-                //an instant  
-                options.Filters.Add(new CustomFilter());
-                //By the type  
-                options.Filters.Add(typeof(CustomFilter));
+            services.AddControllersWithViews();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.LoginPath = "/Login/Login";
             });
-
-            //services.AddControllersWithViews();
         }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+       
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -48,6 +54,8 @@ namespace e_TillRemote
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

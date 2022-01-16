@@ -48,10 +48,10 @@ namespace e_TillRemote.Controllers
         {
 
             //connection string
-            SqlConnection con = new SqlConnection(@"Data Source=MOSAPP;Initial Catalog=eTill;Integrated Security=true");
+            SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
 
-            //SqlConnection con = new SqlConnection(@"Data Source=MOSAPP;Initial catalog=eTill;Integrated Security=true");
-            //SqlConnection con = new SqlConnection("Data Source=MOSAPP;Initial Catalog=eTill;Integrated Security=True");
+            //SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial catalog=eTill;Integrated Security=true");
+            //SqlConnection con = new SqlConnection("Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=True");
 
 
 
@@ -74,12 +74,11 @@ namespace e_TillRemote.Controllers
         }
 
         [HttpPost]
-
         public ActionResult Index2(Dictionary<string, string> Model)
         {
 
             //connection string
-            SqlConnection con = new SqlConnection(@"Data Source=MOSAPP;Initial Catalog=eTill;Integrated Security=true");
+            SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
 
             //stored procedures start
 
@@ -137,7 +136,7 @@ namespace e_TillRemote.Controllers
         {
 
 
-            SqlConnection con = new SqlConnection(@"Data Source=MOSAPP;Initial Catalog=eTill;Integrated Security=true");
+            SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
 
             var stock = con.Query<AddStock>("usp_GetStock", commandType: CommandType.StoredProcedure).ToList();
 
@@ -147,10 +146,14 @@ namespace e_TillRemote.Controllers
 
         }
         [HttpPost]
-        public ActionResult filterStockView(string Stockcol, string colname)
+        public ActionResult filterStockView(string Stockcol, string colname,string Section)
         {
+            if(!string.IsNullOrEmpty(Section))
+            {
+                colname = Section;
+            }
 
-            SqlConnection con = new SqlConnection(@"Data Source=MOSAPP;Initial Catalog=eTill;Integrated Security=true");
+            SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
 
             var param = new DynamicParameters();
             param.Add("@DDLCOLNAME", Stockcol);
@@ -166,10 +169,10 @@ namespace e_TillRemote.Controllers
         {
 
 
-           SqlConnection con = new SqlConnection(@"Data Source=MOSAPP;Initial Catalog=eTill;Integrated Security=true");
+           SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
             
             var param = new DynamicParameters();
-            //param.Add("@NAME", name);
+           
             
             var stock = con.Query<Section2>("usp_GetSectionDetails", commandType: CommandType.StoredProcedure).ToArray();
 
@@ -184,13 +187,13 @@ namespace e_TillRemote.Controllers
 
         }
 
-
+        public IActionResult MainMenu()
+        {
+            return View();
+        }
 
         public ActionResult StockDataTest()
         {
-
-                      
-
             return View();
         }
 
@@ -199,7 +202,7 @@ namespace e_TillRemote.Controllers
         {
 
 
-           SqlConnection con = new SqlConnection(@"Data Source=MOSAPP;Initial Catalog=eTill;Integrated Security=true");
+           SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
             
             var param = new DynamicParameters();
             param.Add("@TABLE", tablename);

@@ -1,133 +1,156 @@
 ﻿@model List<AddStock>
 @{
-//Layout = null;
+    Layout = null;
 }
 
 
 <html>
 <head>
-
-    @*<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.0.min.js" asp-append-version="true" type="text/javascript"></script>
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js" asp-append-version="true" type="text/javascript"></script>
-        <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css"
-          rel="Stylesheet" asp-append-version="true" type="text/css" />*@
-
-    @*<script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>
-    <script src="https: //cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js" type="text/javascript"></script>        
-    <script src="https: //cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js" type="text/javascript"></script>*@
-
-    
-
-
-            
-
-
-
+    <link href="~/lib/bootstrap/dist/css/bootstrap5DataTable.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+   
+    <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/buttons.dataTables.min.css" rel="stylesheet" />
 </head>
 <body>
+    <input type="hidden" value="eTill" id="CompanyName" />
+    <form action="~/Home/filterStockView" method="post" class="form-inline">
+        <div class="row" style="padding-left:20px;margin-top:20px;">
+            <div class="col">
+                @Html.DropDownList("Stockcol", new List<SelectListItem>()
+            {
+                new SelectListItem{Text="Select",Value="-1",Disabled=true,Selected=true},
+                new SelectListItem{Text="ITEMCODE",Value="ITEMCODE"},
+                new SelectListItem{Text="DESCRPTON1",Value="DESCRPTON1"},
+                new SelectListItem{Text="DESCRPTON2",Value="DESCRPTON2"},
+                new SelectListItem{Text="SUPPLIER",Value="SUPPLIER"},
+                new SelectListItem{Text="SECTION1",Value="SECTION1"},
+                new SelectListItem{Text="SECTION2",Value="SECTION2"},
+                new SelectListItem{Text="SECTION3",Value="SECTION3"},
+                new SelectListItem{Text="SECTION4",Value="SECTION4"},
+                new SelectListItem{Text="SECTION5",Value="SECTION5"}
 
-    <form action="~/Home/filterStockView" method="post">
-        @Html.DropDownList("Stockcol", new List<SelectListItem>()
-    {
-        new SelectListItem{Text="ITEMCODE",Value="ITEMCODE"},
-        new SelectListItem{Text="DESCRPTON1",Value="DESCRPTON1"},
-        new SelectListItem{Text="DESCRPTON2",Value="DESCRPTON2"},
-        new SelectListItem{Text="SUPPLIER",Value="SUPPLIER"},
-        new SelectListItem{Text="SECTION1",Value="SECTION1"},
-        new SelectListItem{Text="SECTION2",Value="SECTION2"},
-        new SelectListItem{Text="SECTION3",Value="SECTION3"},
-        new SelectListItem{Text="SECTION4",Value="SECTION4"},
-        new SelectListItem{Text="SECTION5",Value="SECTION5"}
 
 
 
-
-    })
-        @Html.DropDownList("Section", new List<SelectListItem>(),"Select Section",new {id="ddlsection"})
-            
-
-            <div class="ui-widget">
-                <input id="colname" name="colname" />
+            }, new { @class = "form-control" })
+            </div>
+            <div class="col">
+                @Html.DropDownList("Section", new List<SelectListItem>(), "Select Section", new { id = "ddlsection", @class = "form-control" })
+                <input id="colname" name="colname" class="form-control" placeholder="Enter Value" />
             </div>
 
+            <div class="col">
 
-            <input type="submit" name="name" value="submit" />
-    </form> 
-    <table id="example" class="table table table-bordered table-responsive"  style="width:100%">
-        <thead>
-            <tr>
-                
-                <th>ITEMCODE</th>
-                <th>DESCRPTON1</th>
-                <th>DESCRPTON2</th>
-                <th>SUPPLIER</th>
-                <th>Q_IN_HAND</th>
-                <th>COST</th>
-                <th>LAST_COST</th>
-                <th>B_RETAIL</th>
-                <th>SECTION1</th>
-                <th>SECTION2</th>
-                <th>SECTION3</th>
-                <th>SECTION4</th>
-                <th>SECTION5</th>
-                <th>T1_RATE</th>
-                <th>RO_LEVEL</th>
-                <th>SDATE_FROM</th>
-                <th>SDATE_TO</th>
-                <th>OH_SORDER</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @if (Model !=null)
-            {
-
-            
-            @foreach (var item in Model)
-            {
+                <input type="submit" name="name" value="submit" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+    <div class="container-fluid">
+        <table id="example" class="table table-bordered table-responsive" style="padding-left:10px;padding-right:20px;">
+            <thead style="background-color:#dee2e6;color:#171515c2">
                 <tr>
-                    <td>@item.ITEMCODE</td>
-                    <td>@item.DESCRPTON1</td>
-                    <td>@item.DESCRPTON2</td>
-                    <td>@item.SUPPLIER</td>
-                    <td>@item.Q_IN_HAND</td>
-                    <td>@item.COST</td>
-                    <td>@item.LAST_COST</td>
-                    <td>@item.B_RETAIL</td>
-                    <td>@item.SECTION1</td>
-                    <td>@item.SECTION2</td>
-                    <td>@item.SECTION3</td>
-                    <td>@item.SECTION4</td>
-                    <td>@item.SECTION5</td>
 
-                    <td>@item.T1_RATE</td>
-                    <td>@item.RO_LEVEL</td>
-                    <td>@item.SDATE_FROM</td>
-                    <td>@item.SDATE_TO</td>
-                    <td>@item.OH_SORDER</td>
-
+                    <th>ITEMCODE</th>
+                    <th>DESCRPTON1</th>
+                    <th>DESCRPTON2</th>
+                    <th>SUPPLIER</th>
+                    <th>Q_IN_HAND</th>
+                    <th>COST</th>
+                    <th>LAST_COST</th>
+                    <th>RETAIL(Excl)</th>
+                    <th>RETAIL(Incl)</th>
+                    @*<th>SECTION1</th>
+                        <th>SECTION2</th>
+                        <th>SECTION3</th>
+                        <th>SECTION4</th>
+                        <th>SECTION5</th>
+                        <th>T1_RATE</th>
+                        <th>RO_LEVEL</th>
+                        <th>SDATE_FROM</th>
+                        <th>SDATE_TO</th>
+                        <th>OH_SORDER</th>*@
                 </tr>
+            </thead>
 
-            }
-         }
-        </tbody>
-    </table>
+            <tbody>
+                @if (Model != null)
+                {
 
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ITEMCODE</td>
+                            <td>@item.DESCRPTON1</td>
+                            <td>@item.DESCRPTON2</td>
+                            <td>@item.SUPPLIER</td>
+                            <td>@item.Q_IN_HAND</td>
+                            <td style="text-align:right">@item.COST</td>
+                            <td style="text-align:right">@item.LAST_COST</td>
+                            <td style="text-align:right">@item.B_RETAIL</td>
+                            <td style="text-align:right">@item.B_RETAIL</td>
+                            @*<td>@item.SECTION1</td>
+                                <td>@item.SECTION2</td>
+                                <td>@item.SECTION3</td>
+                                <td>@item.SECTION4</td>
+                                <td>@item.SECTION5</td>
+
+                                <td style="text-align:right">@item.T1_RATE</td>
+                                <td style="text-align:right">@item.RO_LEVEL</td>
+                                <td>@item.SDATE_FROM</td>
+                                <td>@item.SDATE_TO</td>
+                                <td style="text-align:right">@item.OH_SORDER</td>*@
+
+                        </tr>
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.buttons.min.js"></script>
+<script src="~/js/jszip.min.js"></script>
+<script src="~/js/pdfmake.min.js"></script>
+<script src="~/js/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
+        type = "search"
+        $('search').text()
+
+        var itemselected = $('#Stockcol option:selected').text();
+        if (itemselected != 'Section1') {
+            $('#ddlsection').hide();
+            $('#colname').show();
+        }
+        else {
+            $('#ddlsection').show();
+            $('#colname').hide();
+        }
         $('#Stockcol').change(function () {
+            var itemselected = $('#Stockcol :selected').text();
+            if (itemselected != 'SECTION1') {
+                $('#ddlsection').hide();
+                $('#colname').show();
+            }
+            else {
+                $('#ddlsection').show();
+                $('#colname').hide();
+            }
             $.ajax({
                 url: "http://localhost:25090/home/SectionData",
                 type: "POST",
                 dataType: "json",
-                data: { tablename: $('#Stockcol :selected').text()},
+                data: { tablename: $('#Stockcol :selected').text() },
                 success: function (data) {
 
 
@@ -155,6 +178,14 @@
 <script>
 
     $(document).ready(function () {
+        var m = new Date();
+        var dateString =
+            m.getUTCFullYear() + "/" +
+            ("0" + (m.getUTCMonth() + 1)).slice(-2) + "/" +
+            ("0" + m.getUTCDate()).slice(-2) + " " +
+            ("0" + m.getUTCHours()).slice(-2) + ":" +
+            ("0" + m.getUTCMinutes()).slice(-2);
+        var Title = "<div class='row'><div class='col-md-6'>eTill</div><div class='col-md-6' style='text-align=right'>"+dateString+"</div></div>"
         $('#example').DataTable({
             columnDefs: [{
                 targets: [0],
@@ -165,7 +196,33 @@
             }, {
                 targets: [4],
                 orderData: [4, 0]
-            }]
+            }],
+            fixedHeader: true,
+            dom: 'Bfrtip',
+            buttons: [
+              
+              
+                {
+                    extend: 'excel',
+                    messageTop: 'The information in this table is copyright to Sirius Cybernetics Corp.'
+                },
+                {
+                    extend: 'pdf',
+                    messageTop: Title.innerHtml//$('#CompanyName').val() + curdate
+                },
+                {
+                    extend: 'print',
+                    messageTop: function () {
+                        printCounter++;
+
+                        if (printCounter === 1) {
+                            return 'This is the first time you have printed this document.';
+                        }
+                        else {
+                            return 'You have printed this document ' + printCounter + ' times';
+                        }
+                    }
+                }],
         });
     });
 
