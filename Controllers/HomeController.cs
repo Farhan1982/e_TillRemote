@@ -11,17 +11,27 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Web;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using System.Net.Mail;
+using System.Net;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
 
 namespace e_TillRemote.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private IConfiguration configuration;
+        private IWebHostEnvironment webHostEnvironment;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, IConfiguration _configuration, IWebHostEnvironment _webHostEnvironment)
         {
             _logger = logger;
+            configuration = _configuration;
+            webHostEnvironment = _webHostEnvironment;
         }
 
         //public IActionResult Index()
@@ -200,8 +210,6 @@ namespace e_TillRemote.Controllers
        [HttpPost]
         public JsonResult SectionData(string tablename)
         {
-
-
            SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
             
             var param = new DynamicParameters();
@@ -215,8 +223,66 @@ namespace e_TillRemote.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult SendMail(MailModel mailModel, IFormFile[] attachments)
+        {
+            
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress(mailModel.emailFromAddress);
+                    mail.To.Add(mailModel.emailToAddress);
+                    mail.Subject = mailModel.subject;
+                    mail.Body = mailModel.body;
+                    mail.IsBodyHtml = true;
+                // mail.Attachments.Add(new Attachment("D:\\TestFile.txt"));//--Uncomment this to send any attachment  
+                List<string> fileNames = null;
+
+                if (attachments != null && attachments.Length > 0)
+                {
+                    fileNames = new List<string>();
+                    foreach (IFormFile attachment in attachments)
+                    {
+                        var path = Path.Combine(webHostEnvironment.WebRootPath, "uploads", attachment.FileName);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            attachment.CopyToAsync(stream);
+                        }
+                        fileNames.Add(path);
+                    }
+                }
+
+                if (attachments != null)
+                {
+                    foreach (var attachment in fileNames)
+                    {
+                        mail.Attachments.Add(new Attachment(attachment));
+                    }
+                }
 
 
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.Credentials = new NetworkCredential("mouzamalimohd749@gmail.com", "Yawer1989");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                }
+            
+        
+            return Redirect("~/Home/StockView");
+        }
+
+
+        public ActionResult getAttachedFileOnSendMailClick()
+        {
+            var address = Path.Combine(webHostEnvironment.WebRootPath, "uploads");
+            var files = Directory.GetFiles(address, "*")
+                .OrderByDescending(d => new FileInfo(d).CreationTime).Take(1);
+            FileInfo fi = new FileInfo(files.SingleOrDefault());
+            var f = fi;
+            return Json(f.FullName);
+        }
     }
 
     public class Auto
@@ -225,6 +291,6 @@ namespace e_TillRemote.Controllers
 
     }
 
-
+    
 
 }

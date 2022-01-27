@@ -1,0 +1,52 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+<form action="~/Home/SendMail" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-2">
+            <label>From</label>
+        </div>
+        <div class="col-md-10">
+            <input type="text" name="emailFromAddress" class="form-control"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label>To</label>
+        </div>
+        <div class="col-md-10">
+            <input type="text" name="emailToAddress" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Subject</label>
+        </div>
+        <div class="col-md-10">
+            <input type="text" name="subject" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Attachment</label>
+        </div>
+        <div class="col-md-10">
+            <input type="file"  id="attachments" name="attachments" multiple="multiple" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Description</label>
+        </div>
+        <div class="col-md-10">
+            <textarea name="body" class="form-control"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="text-align:right">
+            <input type="submit" value="Send" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
