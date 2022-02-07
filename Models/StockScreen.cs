@@ -54,6 +54,7 @@ namespace e_TillRemote.Models
         public double LAST_COST { get; set; }
 
         public double B_RETAIL { get; set; }
+        public double B_RETAILInclude { get; set; }
 
         public double OH_SORDER { get; set; }
        

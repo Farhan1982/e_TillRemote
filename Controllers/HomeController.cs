@@ -283,6 +283,11 @@ namespace e_TillRemote.Controllers
             var f = fi;
             return Json(f.FullName);
         }
+
+        public ViewResult FirstPage()
+        {
+            return View();
+        }
     }
 
     public class Auto
