@@ -20,8 +20,13 @@ namespace e_TillRemote.Models
 
     public class Section1
     {
+        public int SecId { get; set; }
         public string CODE { get; set; }
         public string NAME { get; set; }
+        public string NAME1 { get; set; }
+        public int PU_NO { get; set; }
+        public string PU_DESC { get; set; }
+       
 
     }
 

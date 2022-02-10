@@ -288,6 +288,72 @@ namespace e_TillRemote.Controllers
         {
             return View();
         }
+
+        public IActionResult StockBreakup()
+        {
+           string TypeSection= HttpContext.Request.Query["TypeSection"].ToString();
+            SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
+            var param = new DynamicParameters();
+            param.Add("@TypeSection", TypeSection);
+            var sectionsData = con.Query<Section1>("usp_GetSections", param: param, commandType: CommandType.StoredProcedure);
+            return View(sectionsData);
+        }
+        
+
+         [HttpPost]
+        public IActionResult SaveStockBreakup(Section1 section1,string TypeSection)
+        {
+
+            SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
+            var param = new DynamicParameters();
+            param.Add("@TypeSection", TypeSection);
+            param.Add("@Code", section1.CODE);
+            param.Add("@Name", section1.NAME);
+            param.Add("@Name1", section1.NAME1);
+            param.Add("@PuNo", section1.PU_NO);
+            param.Add("@PuDesc", section1.PU_DESC);
+            
+            var sectionsData = con.Execute("usp_InsertSectionData", param: param, commandType: CommandType.StoredProcedure);
+            return Redirect("~/Home/StockBreakup?TypeSection="+ TypeSection);
+        }
+        [HttpPost]
+        public IActionResult UpdateStockBreakup(Section1 section1, string TypeSection)
+        {
+
+            SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
+            var param = new DynamicParameters();
+            param.Add("@TypeSection", TypeSection);
+            param.Add("@Code", section1.CODE);
+            param.Add("@Name", section1.NAME);
+            param.Add("@Name1", section1.NAME1);
+            param.Add("@PuNo", section1.PU_NO);
+            param.Add("@PuDesc", section1.PU_DESC);
+            param.Add("@SecId", section1.SecId);
+            var sectionsData = con.Execute("usp_UpdateSectionData", param: param, commandType: CommandType.StoredProcedure);
+            return Redirect("~/Home/StockBreakup?TypeSection=" + TypeSection);
+
+        }
+        [HttpPost]
+        public IActionResult DeleteStockBreakup(int SecId, string TypeSection)
+        {
+
+            SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
+            var param = new DynamicParameters();
+            param.Add("@TypeSection", TypeSection);
+            param.Add("@SecId", SecId);
+            var sectionsData = con.Execute("usp_DeleteSections", param: param, commandType: CommandType.StoredProcedure);
+            return Redirect("~/Home/StockBreakup?TypeSection=" + TypeSection);
+
+        }
+        //public ViewResult SaveStockBreakup(string TypeSection)
+        //{
+        //    SqlConnection con = new SqlConnection(@"Data Source=AZAM-PC\SQLEXPRESS;Initial Catalog=eTill;Integrated Security=true");
+        //    var param = new DynamicParameters();
+        //    param.Add("@TypeSection", TypeSection);
+        //    var sectionsData = con.Query<Section1>("usp_GetSections", param: param, commandType: CommandType.StoredProcedure);
+        //    return View(sectionsData);
+        //}
+
     }
 
     public class Auto
