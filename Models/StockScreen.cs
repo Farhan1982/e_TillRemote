@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,7 +22,9 @@ namespace e_TillRemote.Models
     public class Section1
     {
         public int SecId { get; set; }
+        [Required]
         public string CODE { get; set; }
+        [Required]
         public string NAME { get; set; }
         public string NAME1 { get; set; }
         public int PU_NO { get; set; }

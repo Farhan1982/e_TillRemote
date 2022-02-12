@@ -32,6 +32,9 @@
         padding-bottom: 8px;
     }
 </style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- Modal Create Section -->
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -50,7 +53,8 @@
                             <label>Code</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" name="Code" class="form-control" />
+                            <input type="text" name="Code" class="form-control" required />
+
                         </div>
                     </div>
                     <div class="row">
@@ -58,7 +62,8 @@
                             <label>Name</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" name="Name" class="form-control" />
+                            <input type="text" name="Name" class="form-control" required />
+
                         </div>
                     </div>
                     <div class="row">
@@ -131,7 +136,8 @@
                             <label>Name</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" id="updName" name="Name" class="form-control" />
+                            <input type="text" id="updName" name="Name" class="form-control" required />
+
                         </div>
                     </div>
                     <div class="row">
@@ -192,7 +198,7 @@
                 <form asp-action="DeleteStockBreakup" method="post">
                     <input type="hidden" name="TypeSection" value="@TypeSection" />
                     <input type="hidden" name="SecId" id="deleteSecId" />
-                      
+
                     <div class="row">
                         <div class="col-md-12">
                             <h2>Are you sure you want to Delete Record?</h2>
@@ -205,9 +211,9 @@
                             <input type="submit" value="Delete" class="btn btn-danger" />
                         </div>
                     </div>
-</form>
+                </form>
             </div>
-            
+
         </div>
 
     </div>
@@ -236,7 +242,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.PU_DESC)
             </th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -265,8 +271,12 @@
                         var NAME1 = item.NAME1 != null ? item.NAME1 : "nullable";
                         var PU_NO = item.PU_NO != 0 ? item.PU_NO : 0;
                     }
-                    <a asp-action="EditSection" data-toggle="modal" asp-route-id="@item.SecId" data-target="#EditModal" onclick="Editfun('@CODE','@NAME','@NAME1','@PU_NO','@PU_DES','@item.SecId')">Edit</a>
-                    <a asp-action="DeleteSection" data-toggle="modal" asp-route-id="@item.SecId" data-target="#DeleteModal" onclick="Deletefun('@item.SecId')">Delete</a>
+                    <a asp-action="EditSection" data-toggle="modal" asp-route-id="@item.SecId" data-target="#EditModal" onclick="Editfun('@CODE','@NAME','@NAME1','@PU_NO','@PU_DES','@item.SecId')">
+                        <span class="glyphicon">&#x270f;</span>
+                    </a>
+                    <a asp-action="DeleteSection" data-toggle="modal" asp-route-id="@item.SecId" data-target="#DeleteModal" onclick="Deletefun('@item.SecId')">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
 
                 </td>
             </tr>
